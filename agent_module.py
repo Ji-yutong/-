@@ -25,8 +25,9 @@ class Agent:
         print("Initializing MultimodalModule...")
         self.multimodal_module = MultimodalModule()     # 实例化多模态模块
         print("Loading chatglm3-6b model...")
-        self.chatglm_model = AutoModelForCausalLM.from_pretrained(config['llm_path'], trust_remote_code=True)    # 加载 chatglm3-6b 模型
-        self.chatglm_tokenizer = AutoTokenizer.from_pretrained(config['llm_path'], trust_remote_code=True)       # 加载 chatglm3-6b 分词器
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # 设置设备为 GPU
+        self.chatglm_model = AutoModelForCausalLM.from_pretrained(config['llm_path'], trust_remote_code=True).to(self.device)    # 加载 chatglm3-6b 模型
+        self.chatglm_tokenizer = AutoTokenizer.from_pretrained(config['llm_path'], trust_remote_code=True)      # 加载 chatglm3-6b 分词器
         print("Loading FAISS index...")
         self.index = faiss.read_index(config['vector_dbindex_path'])  # 加载 FAISS 索引
         self.dimension = self.index.d        # 提取数据维度
