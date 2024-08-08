@@ -2,7 +2,6 @@ import json
 import jieba
 import numpy as np
 from transformers import BertTokenizer, BertModel
-import wikipediaapi
 import wikipedia
 from sklearn.feature_extraction.text import TfidfVectorizer
 import torch
