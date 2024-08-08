@@ -71,13 +71,13 @@ class Agent:
 
 
         # 使用 chatglm3-6b 模型生成最终的回复
-        #device = torch.device('cuda')
-        #self.chatglm_model.to(device)
         print("prompt送入模型tokenizer，开始对prompt进行编码")
         inputs = self.chatglm_tokenizer(prompt, return_tensors='pt')
-        #inputs = {key: value.to(device) for key, value in inputs.items()}
+        # 确保所有输入张量都在正确的设备上
+        input_ids = inputs['input_ids'].to(self.device)
+        attention_mask = inputs['attention_mask'].to(self.device) if 'attention_mask' in inputs else None
         print("将编码的prompt送入模型，开始生成回复")
-        outputs = self.chatglm_model.generate(**inputs, max_length=512, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
+        outputs = self.chatglm_model.generate(input_ids=input_ids, attention_mask=attention_mask, max_length=512, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
         print("得到向量后转换成文本")
         response_text = self.chatglm_tokenizer.decode(outputs[0], skip_special_tokens=True)
         print("更新对话历史记录")
