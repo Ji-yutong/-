@@ -9,3 +9,5 @@ streamlit==1.37.0
 Wikipedia-API==0.6.0
 fuzzywuzzy==0.18.0
 wikipedia==1.4.0
+jieba==0.42.1
+scikit-learn==1.5.1
